@@ -53,10 +53,12 @@ use tokio::sync::mpsc;
 use super::nodejs;
 #[cfg(feature = "python")]
 use super::python;
+#[cfg(feature = "deno")]
+use super::deno;
 
 use super::types::{Cmd, EngineError, EngineHandle, Language, Line, Resp, Stream};
 
-#[cfg(any(feature = "python", feature = "nodejs"))]
+#[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
 use super::types::Engine;
 
 //--------------------------------------------------------------------------------------------------
@@ -67,12 +69,14 @@ use super::types::Engine;
 ///
 /// This struct holds instances of each language engine that has been
 /// enabled through feature flags. Each engine implements the `Engine` trait.
-#[cfg(any(feature = "python", feature = "nodejs"))]
+#[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
 struct Engines {
     #[cfg(feature = "python")]
     python: Box<dyn Engine>,
     #[cfg(feature = "nodejs")]
     nodejs: Box<dyn Engine>,
+    #[cfg(feature = "deno")]
+    deno: Box<dyn Engine>,
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -203,7 +207,7 @@ pub async fn start_engines() -> Result<EngineHandle, EngineError> {
     let (cmd_tx, mut _cmd_rx) = mpsc::channel::<Cmd>(100);
 
     // Spawn reactor task
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     tokio::spawn(async move {
         // Initialize engines asynchronously
         let mut engines = initialize_engines()
@@ -250,6 +254,21 @@ pub async fn start_engines() -> Result<EngineHandle, EngineError> {
                                 .await;
                         }
                     }
+                    #[cfg(feature = "deno")]
+                    Language::Deno => {
+                        if let Err(e) = engines
+                            .deno
+                            .eval(_id.clone(), _code, &_resp_tx, _timeout)
+                            .await
+                        {
+                            let _ = _resp_tx
+                                .send(Resp::Error {
+                                    id: _id,
+                                    message: e.to_string(),
+                                })
+                                .await;
+                        }
+                    }
                 },
                 Cmd::Shutdown => {
                     // Shutdown all engines
@@ -257,6 +276,8 @@ pub async fn start_engines() -> Result<EngineHandle, EngineError> {
                     engines.python.shutdown().await;
                     #[cfg(feature = "nodejs")]
                     engines.nodejs.shutdown().await;
+                    #[cfg(feature = "deno")]
+                    engines.deno.shutdown().await;
                     break;
                 }
             }
@@ -278,23 +299,29 @@ pub async fn start_engines() -> Result<EngineHandle, EngineError> {
 /// # Errors
 ///
 /// Returns an `EngineError` if any of the engines fail to initialize.
-#[cfg(any(feature = "python", feature = "nodejs"))]
+#[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
 async fn initialize_engines() -> Result<Engines, EngineError> {
     #[cfg(feature = "python")]
     let mut python_engine = python::create_engine()?;
     #[cfg(feature = "nodejs")]
     let mut nodejs_engine = nodejs::create_engine()?;
+    #[cfg(feature = "deno")]
+    let mut deno_engine = deno::create_engine()?;
 
     // Initialize each engine asynchronously
     #[cfg(feature = "python")]
     python_engine.initialize().await?;
     #[cfg(feature = "nodejs")]
     nodejs_engine.initialize().await?;
+    #[cfg(feature = "deno")]
+    deno_engine.initialize().await?;
 
     Ok(Engines {
         #[cfg(feature = "python")]
         python: python_engine,
         #[cfg(feature = "nodejs")]
         nodejs: nodejs_engine,
+        #[cfg(feature = "deno")]
+        deno: deno_engine,
     })
 }

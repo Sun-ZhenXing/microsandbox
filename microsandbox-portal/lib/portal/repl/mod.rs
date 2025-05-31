@@ -57,6 +57,9 @@ pub mod python;
 #[cfg(feature = "nodejs")]
 pub mod nodejs;
 
+#[cfg(feature = "deno")]
+pub mod deno;
+
 pub mod engine;
 pub mod types;
 

@@ -44,6 +44,10 @@ pub enum Language {
     /// Node.js/JavaScript support
     #[cfg(feature = "nodejs")]
     Node,
+
+    /// Deno/TypeScript support
+    #[cfg(feature = "deno")]
+    Deno,
 }
 
 /// Stream type for output lines

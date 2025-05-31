@@ -14,7 +14,7 @@ use crate::{
     state::SharedState,
 };
 
-#[cfg(any(feature = "python", feature = "nodejs"))]
+#[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
 use crate::portal::repl::{start_engines, Language};
 
 //--------------------------------------------------------------------------------------------------
@@ -92,7 +92,7 @@ async fn sandbox_run_impl(_state: SharedState, params: Value) -> Result<Value, P
         .map_err(|e| PortalError::JsonRpc(format!("Invalid parameters: {}", e)))?;
 
     // Convert language string to Language enum
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     let language;
 
     match params.language.to_lowercase().as_str() {
@@ -100,6 +100,8 @@ async fn sandbox_run_impl(_state: SharedState, params: Value) -> Result<Value, P
         "python" => language = Language::Python,
         #[cfg(feature = "nodejs")]
         "node" | "nodejs" | "javascript" => language = Language::Node,
+        #[cfg(feature = "deno")]
+        "deno" | "typescript" => language = Language::Deno,
         _ => {
             // Check if we're being asked for a language that is supported but not enabled via features
             let error_msg = match params.language.to_lowercase().as_str() {
@@ -111,6 +113,10 @@ async fn sandbox_run_impl(_state: SharedState, params: Value) -> Result<Value, P
                     "Node.js language support is not enabled. Recompile with --features nodejs"
                         .to_string()
                 }
+                "deno" | "typescript" => {
+                    "Deno language support is not enabled. Recompile with --features deno"
+                        .to_string()
+                }
                 _ => format!("Unsupported language: {}", params.language),
             };
             return Err(PortalError::JsonRpc(error_msg));
@@ -119,7 +125,7 @@ async fn sandbox_run_impl(_state: SharedState, params: Value) -> Result<Value, P
 
     // Get or initialize engine handle
     // With tokio::sync::Mutex, we can safely .await while holding the lock
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     let engine_handle = {
         // Get the current engine handle if it exists
         let mut lock = _state.engine_handle.lock().await;
@@ -139,25 +145,25 @@ async fn sandbox_run_impl(_state: SharedState, params: Value) -> Result<Value, P
         }
     };
 
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     debug!("Language: {}", params.language);
 
     // Use a temporary identifier for evaluation
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     let temp_id = uuid::Uuid::new_v4().to_string();
 
     // Execute the code in REPL
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     let lines = engine_handle
         .eval(&params.code, language, &temp_id, params.timeout)
         .await
         .map_err(|e| PortalError::Internal(format!("REPL execution failed: {}", e)))?;
 
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     debug!("REPL execution produced {} output lines", lines.len());
 
     // Convert the lines to a format suitable for JSON
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     let output_lines: Vec<Value> = lines
         .iter()
         .map(|line| {
@@ -172,18 +178,22 @@ async fn sandbox_run_impl(_state: SharedState, params: Value) -> Result<Value, P
         .collect();
 
     // Construct the result JSON object with explicit String conversions
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     let result = json!({
         "status": "success".to_string(),
         "language": params.language.to_string(),
         "output": output_lines,
     });
 
-    #[cfg(any(feature = "python", feature = "nodejs"))]
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
     debug!("Returning result with output: {}", result);
 
-    #[cfg(any(feature = "python", feature = "nodejs"))]
-    Ok(result)
+    #[cfg(any(feature = "python", feature = "nodejs", feature = "deno"))]
+    return Ok(result);
+
+    // If no REPL features are enabled, return an error
+    #[cfg(not(any(feature = "python", feature = "nodejs", feature = "deno")))]
+    Err(PortalError::JsonRpc("No REPL engines are enabled. Please compile with at least one of: --features python, --features nodejs, or --features deno".to_string()))
 }
 
 /// Implementation for sandbox command run method

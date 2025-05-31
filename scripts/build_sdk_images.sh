@@ -39,7 +39,7 @@ NC='\033[0m' # No Color
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 # List of available SDKs
-AVAILABLE_SDKS=("python" "node")
+AVAILABLE_SDKS=("python" "node" "deno")
 
 # Display usage information
 function show_usage {
@@ -47,13 +47,14 @@ function show_usage {
     echo
     echo "Options:"
     echo "  -h, --help              Show this help message"
-    printf "  -s, --sdk SDK_NAME      Build specific SDK image (${YELLOW}python${NC}, ${YELLOW}node${NC})\n"
+    printf "  -s, --sdk SDK_NAME      Build specific SDK image (${YELLOW}python${NC}, ${YELLOW}node${NC}, ${YELLOW}deno${NC})\n"
     echo "  -a, --all               Build all SDK images (default)"
     echo
     echo "Examples:"
     echo "  $0                      # Build all SDK images"
     echo "  $0 -s python            # Build only the Python SDK image"
     echo "  $0 -s node              # Build only the Node.js SDK image"
+    echo "  $0 -s deno              # Build only the Deno SDK image"
     echo
 }
 
