@@ -1,0 +1,29 @@
+{
+    "name": "microsandbox (Rust)",
+    "build": {
+        "dockerfile": "./Dockerfile",
+        "context": ".."
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+    "workspaceFolder": "/workspace",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {
+            "azureDnsAutoDetection": true,
+            "installDockerBuildx": true,
+            "version": "latest",
+            "dockerDashComposeVersion": "v2"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": [
+                "streetsidesoftware.code-spell-checker",
+                "rust-lang.rust-analyzer"
+            ]
+        }
+    },
+    "forwardPorts": [
+        "5555:5555"
+    ]
+}
