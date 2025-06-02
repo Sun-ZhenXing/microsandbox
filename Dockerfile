@@ -16,8 +16,8 @@ RUN curl -sSL https://get.microsandbox.dev | sh
 
 ENV PATH="$BIN_DIR:$PATH"
 
-RUN ["msb", "pull", "microsandbox/python"]
-RUN ["msb", "pull", "microsandbox/node"]
+RUN msb pull microsandbox/python
+RUN msb pull microsandbox/node
 
 EXPOSE 5555
 CMD ["msb", "server", "start", "--host", "0.0.0.0", "--port", "5555"]

@@ -1,0 +1,13 @@
+services:
+  microsandbox:
+    image: microsandbox:${BUILD_VERSION:-latest}
+    build:
+      context: ./build
+      dockerfile: ../dev.Dockerfile
+    restart: unless-stopped
+    ports:
+      - "5555:5555"
+    volumes:
+      - /dev/shm:/dev/shm
+      - /dev/kvm:/dev/kvm
+      - ./data:/root/.microsandbox
