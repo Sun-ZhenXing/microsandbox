@@ -33,6 +33,7 @@ jobs:
         uses: safedep/vet-action@v1
         with:
           policy: .github/vet/policy.yaml
+          exception-file: .github/vet/exceptions.yml
 
           # Allow vet commenting in PR for Summary
           # https://github.com/safedep/vet-action?tab=readme-ov-file#configuration

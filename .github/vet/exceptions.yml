@@ -1,0 +1,6 @@
+description: Exceptions File for vet
+exceptions:
+  - ecosystem: cargo
+    expires: "2026-06-01T00:00:00Z"
+    name: "unicase"
+    version: 2.8.1
