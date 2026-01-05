@@ -8,16 +8,16 @@ Let's help you start your first self-hosted sandbox server. It's easy!
 
 > **Platform-specific requirements:**
 >
-> - <a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img src="https://cdn.simpleicons.org/apple" height="14"/></a><a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img src="https://cdn.simpleicons.org/apple/white" height="14"/></a> **macOS** — Requires Apple Silicon (M1/M2/M3/M4)
-> - <a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img src="https://cdn.simpleicons.org/linux/black" height="14"/></a><a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img src="https://cdn.simpleicons.org/linux/white" height="14"/></a> **Linux** <a href="https://github.com/microsandbox/microsandbox/issues/224" target="_blank"><sup><sup>#224</sup></sup></a> — KVM virtualization must be enabled
-> - <a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img src="https://github.com/user-attachments/assets/1677b695-e359-4b51-9931-f8f5f9488e71" height="14"/></a><a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img src="https://github.com/user-attachments/assets/e3e5b341-b097-45d9-bea1-eb70e0769340" height="14"/></a> **Windows** <a href="https://github.com/microsandbox/microsandbox/issues/224" target="_blank"> — [Coming soon!](https://github.com/microsandbox/microsandbox/issues/47)
+> - <img src="https://cdn.simpleicons.org/apple" height="14"/> **macOS** — Requires Apple Silicon (M1/M2/M3/M4)
+> - <img src="https://cdn.simpleicons.org/linux/black" height="14"/> **Linux** <a href="https://github.com/microsandbox/microsandbox/issues/224" target="_blank"><sup><sup>#224</sup></sup></a> — KVM virtualization must be enabled
+> - <img src="https://github.com/user-attachments/assets/1677b695-e359-4b51-9931-f8f5f9488e71" height="14"/> **Windows** <a href="https://github.com/microsandbox/microsandbox/issues/224" target="_blank"> — [Coming soon!](https://github.com/microsandbox/microsandbox/issues/47)
 
 ##
 
 #### 1. Install CLI
 
 ```sh
-curl -sSL https://get.microsandbox.dev | sh
+curl -sSL https://raw.githubusercontent.com/zerocore-ai/microsandbox/refs/heads/main/scripts/install_microsandbox.sh | sh
 ```
 
 This will install the `msb` CLI tool, which helps you manage sandboxes locally.
