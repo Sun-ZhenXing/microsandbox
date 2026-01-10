@@ -19,16 +19,13 @@ use crate::MicrosandboxResult;
 /// This removes all scripts in ~/.local/bin that contain the MSB-ALIAS marker,
 /// except for the core toolchain scripts (msi, msx, msr).
 ///
-/// ## Arguments
-/// * `force` - Whether to force cleaning even if script files exist
-///
 /// ## Example
 /// ```no_run
 /// use microsandbox_core::management::toolchain;
 ///
 /// # async fn example() -> anyhow::Result<()> {
 /// // Clean all user-installed scripts
-/// toolchain::clean(true).await?;
+/// toolchain::clean().await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -173,21 +170,21 @@ async fn clean_user_scripts(bin_dir: &Path) -> MicrosandboxResult<()> {
         }
 
         // Skip protected executables
-        if let Some(filename) = path.file_name().and_then(|f| f.to_str()) {
-            if protected_executables.contains(&filename) {
-                tracing::debug!("skipping protected executable: {}", filename);
-                continue;
-            }
+        if let Some(filename) = path.file_name().and_then(|f| f.to_str())
+            && protected_executables.contains(&filename)
+        {
+            tracing::debug!("skipping protected executable: {}", filename);
+            continue;
         }
 
         // Read file content and check for MSB-ALIAS marker
-        if let Ok(content) = fs::read_to_string(&path).await {
-            if content.contains("# MSB-ALIAS:") {
-                // This is a microsandbox alias script, remove it
-                fs::remove_file(&path).await?;
-                tracing::info!("removed user script: {}", path.display());
-                removed_count += 1;
-            }
+        if let Ok(content) = fs::read_to_string(&path).await
+            && content.contains("# MSB-ALIAS:")
+        {
+            // This is a microsandbox alias script, remove it
+            fs::remove_file(&path).await?;
+            tracing::info!("removed user script: {}", path.display());
+            removed_count += 1;
         }
     }
 

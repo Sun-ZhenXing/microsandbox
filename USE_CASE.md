@@ -1,8 +1,8 @@
 
 # <sub><img height="18" src="https://octicons-col.vercel.app/light-bulb/A770EF">&nbsp;&nbsp;Use Cases</sub>
 
-<a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img align="right" width="400" alt="coding-dark" src="https://github.com/user-attachments/assets/37c14bf1-e2f7-4af3-804e-5901de845715"></a>
-<a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img align="right" width="400" alt="coding-light" src="https://github.com/user-attachments/assets/1bfe7223-869b-4782-9fce-3620c4400bbf"></a>
+<img align="right" width="400" alt="coding-dark" src="https://github.com/user-attachments/assets/37c14bf1-e2f7-4af3-804e-5901de845715"></img>
+<img align="right" width="400" alt="coding-light" src="https://github.com/user-attachments/assets/1bfe7223-869b-4782-9fce-3620c4400bbf"></img>
 
 ### Coding & Dev Environments
 
@@ -12,8 +12,8 @@ Your AI can create comprehensive development environments in milliseconds and ru
 
 <img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
 
-<a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img align="left" width="400" alt="data-dark" src="https://github.com/user-attachments/assets/3794e426-a223-4064-8939-025c7bbaf5ea"></a>
-<a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img align="left" width="400" alt="data-light" src="https://github.com/user-attachments/assets/3a330ea5-85b5-4176-8fe7-a43d59733cf1"></a>
+<img align="left" width="400" alt="data-dark" src="https://github.com/user-attachments/assets/3794e426-a223-4064-8939-025c7bbaf5ea"></img>
+<img align="left" width="400" alt="data-light" src="https://github.com/user-attachments/assets/3a330ea5-85b5-4176-8fe7-a43d59733cf1"></img>
 
 ### Data Analysis
 
@@ -24,8 +24,8 @@ Microsandbox lets your AI work with powerful libraries like NumPy, Pandas, and T
 
 <img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
 
-<a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img align="right" width="400" alt="web-dark" src="https://github.com/user-attachments/assets/3048a39a-c3cb-4f6e-9bc0-49b404abed03"></a>
-<a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img align="right" width="400" alt="web-light" src="https://github.com/user-attachments/assets/e6a01e6d-c23f-4c04-bfbf-3e0cb283e0a9"></a>
+<img align="right" width="400" alt="web-dark" src="https://github.com/user-attachments/assets/3048a39a-c3cb-4f6e-9bc0-49b404abed03"></img>
+<img align="right" width="400" alt="web-light" src="https://github.com/user-attachments/assets/e6a01e6d-c23f-4c04-bfbf-3e0cb283e0a9"></img>
 
 ### Web Browsing Agent
 
@@ -35,8 +35,8 @@ With microsandbox, your AI can navigate websites, extract data, fill out forms, 
 
 <img width="2000" height="0" src="https://github.com/user-attachments/assets/ee14e6f7-20b8-4391-9091-8e8e25561929"><br>
 
-<a href="https://microsandbox.dev#gh-dark-mode-only" target="_blank"><img align="left" width="400" alt="host-dark" src="https://github.com/user-attachments/assets/3c542e78-b5a0-4525-8a2a-376447d786fd"></a>
-<a href="https://microsandbox.dev#gh-light-mode-only" target="_blank"><img align="left" width="400" alt="host-light" src="https://github.com/user-attachments/assets/337b3d5f-9c33-4126-ae55-aca33abbf73e"></a>
+<img align="left" width="400" alt="host-dark" src="https://github.com/user-attachments/assets/3c542e78-b5a0-4525-8a2a-376447d786fd">
+<img align="left" width="400" alt="host-light" src="https://github.com/user-attachments/assets/337b3d5f-9c33-4126-ae55-aca33abbf73e">
 
 ### Instant App Hosting
 

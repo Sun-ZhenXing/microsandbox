@@ -99,7 +99,7 @@ pub async fn initialize(project_dir: Option<PathBuf>) -> MicrosandboxResult<()> 
 ///
 /// ## Arguments
 /// * `project_dir` - Optional path where the microsandbox environment should be cleaned.
-///                   If None, uses current directory
+///   If None, uses current directory
 /// * `config_file` - Optional path to the Microsandbox config file. If None, uses default filename
 /// * `sandbox_name` - Optional name of the sandbox to clean. If None, cleans entire project
 /// * `force` - Whether to force cleaning even if the sandbox exists in config or config file exists
@@ -189,24 +189,25 @@ pub async fn clean(
     );
 
     // If the sandbox exists in the config and force is false, don't clean
-    if let Ok((config, _, _)) = config_result {
-        if config.get_sandbox(sandbox_name).is_some() && !force {
-            #[cfg(feature = "cli")]
-            term::finish_with_error(&clean_sandbox_sp);
+    if let Ok((config, _, _)) = config_result
+        && config.get_sandbox(sandbox_name).is_some()
+        && !force
+    {
+        #[cfg(feature = "cli")]
+        term::finish_with_error(&clean_sandbox_sp);
 
-            #[cfg(feature = "cli")]
-            println!(
-                "Sandbox '{}' exists in configuration. Use {} to clean it",
-                sandbox_name,
-                console::style("--force").yellow()
-            );
+        #[cfg(feature = "cli")]
+        println!(
+            "Sandbox '{}' exists in configuration. Use {} to clean it",
+            sandbox_name,
+            console::style("--force").yellow()
+        );
 
-            tracing::info!(
-                "Sandbox '{}' exists in configuration. Use --force to clean it",
-                sandbox_name
-            );
-            return Ok(());
-        }
+        tracing::info!(
+            "Sandbox '{}' exists in configuration. Use --force to clean it",
+            sandbox_name
+        );
+        return Ok(());
     }
 
     // Get sandbox namespace
@@ -263,7 +264,7 @@ pub async fn clean(
 ///
 /// ## Arguments
 /// * `project_dir` - Optional path where the microsandbox environment is located.
-///                   If None, uses current directory
+///   If None, uses current directory
 /// * `config_file` - Optional path to the Microsandbox config file. If None, uses default filename
 /// * `sandbox_name` - Name of the sandbox to show logs for
 /// * `follow` - Whether to follow the log file (tail -f mode)
@@ -272,16 +273,17 @@ pub async fn clean(
 /// ## Example
 /// ```no_run
 /// use microsandbox_core::management::menv;
+/// use std::path::Path;
 ///
 /// # async fn example() -> anyhow::Result<()> {
 /// // Show all logs for a sandbox
-/// menv::show_log(None, None, "my-sandbox", false, None).await?;
+/// menv::show_log(None::<&Path>, None, "my-sandbox", false, None).await?;
 ///
 /// // Show last 100 lines of logs
-/// menv::show_log(None, None, "my-sandbox", false, Some(100)).await?;
+/// menv::show_log(None::<&Path>, None, "my-sandbox", false, Some(100)).await?;
 ///
 /// // Follow logs in real-time
-/// menv::show_log(None, None, "my-sandbox", true, None).await?;
+/// menv::show_log(None::<&Path>, None, "my-sandbox", true, None).await?;
 /// # Ok(())
 /// # }
 /// ```
@@ -377,13 +379,15 @@ pub async fn show_log(
 /// ```no_run
 /// use microsandbox_core::management::menv;
 /// use microsandbox_core::management::config;
+/// use std::path::Path;
 ///
 /// # async fn example() -> anyhow::Result<()> {
 /// // Show all sandboxes for a local project
-/// let (config, _, _) = config::load_config(None, None).await?;
+/// let (config, _, _) = config::load_config(None::<&Path>, None).await?;
 /// menv::show_list(config.get_sandboxes());
 ///
-/// // Show all sandboxes for a remote namespace
+/// // Show all sandboxes for a specific namespace directory
+/// let namespace_path = Path::new("/path/to/namespace");
 /// let (config, _, _) = config::load_config(Some(namespace_path), None).await?;
 /// menv::show_list(config.get_sandboxes());
 /// # Ok(())
@@ -414,11 +418,7 @@ where
         println!("{}. {}", style(i + 1).bold(), style(*name).bold());
 
         // Image
-        println!(
-            "   {}: {}",
-            style("Image").dim(),
-            sandbox.get_image().to_string()
-        );
+        println!("   {}: {}", style("Image").dim(), sandbox.get_image());
 
         // Resources
         let mut resources = Vec::new();
@@ -433,11 +433,7 @@ where
         }
 
         // Network
-        println!(
-            "   {}: {}",
-            style("Network").dim(),
-            format!("{:?}", sandbox.get_scope())
-        );
+        println!("   {}: {}", style("Network").dim(), sandbox.get_scope());
 
         // Ports
         if !sandbox.get_ports().is_empty() {
@@ -650,7 +646,7 @@ pub fn print_namespace_header(namespace: &str) {
 //--------------------------------------------------------------------------------------------------
 
 /// Create the required directories and files for a microsandbox environment
-pub(crate) async fn ensure_menv_files(menv_path: &PathBuf) -> MicrosandboxResult<()> {
+pub(crate) async fn ensure_menv_files(menv_path: &Path) -> MicrosandboxResult<()> {
     // Create log directory if it doesn't exist
     fs::create_dir_all(menv_path.join(LOG_SUBDIR)).await?;
 
