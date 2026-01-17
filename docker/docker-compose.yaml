@@ -24,15 +24,15 @@ services:
     devices:
       - /dev/kvm:/dev/kvm
     command:
-      [
-        "server",
-        "start",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "${MICROSANDBOX_PORT:-5555}",
-        "--dev",
-      ]
+      - /bin/sh
+      - -c
+      - >
+        if [ "${MICROSANDBOX_DEV_MODE:-true}" = "true" ]; then
+          DEV_FLAG="--dev";
+        else
+          DEV_FLAG="";
+        fi;
+        exec server start --host 0.0.0.0 --port ${MICROSANDBOX_PORT:-5555} ${DEV_FLAG};
     working_dir: /workspace
     deploy:
       resources:
