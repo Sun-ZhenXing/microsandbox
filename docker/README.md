@@ -5,9 +5,7 @@ This directory contains Docker and Docker Compose configurations for running Mic
 ## Quick Start
 
 ```bash
-# Run with Docker Compose
-dcd docker
-docker-compose up -d
+docker compose -f docker/docker-compose.yaml up -d
 ```
 
 ## Configuration
