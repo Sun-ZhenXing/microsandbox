@@ -33,7 +33,7 @@ services:
           DEV_FLAG="";
         fi;
         exec server start --host 0.0.0.0 --port ${MICROSANDBOX_PORT:-5555} ${DEV_FLAG};
-    working_dir: /workspace
+    working_dir: /root
     deploy:
       resources:
         limits:
